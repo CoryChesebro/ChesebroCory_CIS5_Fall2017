@@ -31,16 +31,22 @@ using namespace std;
 
 //Function prototypes
 string genCrds(short);
-short chekVal(string);
 string outCrds(string);
+short chekVal(string);
+
 
 //Execution begins here
 int main() {
     //Declare / Initialize variables / Initialize random seed
-    string name;
-    string pCards = genCrds(2), cCards = genCrds(2);//Declare each players hand
-    short pTotal = chekVal(pCards), cTotal = chekVal(cCards);
     srand(static_cast<unsigned int>(time(0)));
+    string name;
+    string pCards, cCards;//Declare each players hand
+    
+    pCards = genCrds(2);
+    cCards = genCrds(2);
+    
+    short pTotal = chekVal(pCards), cTotal = chekVal(cCards);
+    
     
     //Process mapping
     cout<<"Welcome to BlackJack!"<<endl<<endl;
@@ -118,7 +124,7 @@ short chekVal(string hand){
 }
 
 string outCrds(string hand){
-    string outPut;
+    string outPut = "";
     for(short i = 0; i < hand.length(); i++){
         char temp = hand[i];
         switch(temp){
