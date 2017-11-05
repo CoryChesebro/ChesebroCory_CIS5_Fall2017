@@ -30,13 +30,15 @@ using namespace std;
 //Global constants
 
 //Function prototypes
-string gCards(short);
-void chekVal(short);
+string genCrds(short);
+short chekVal(string);
 
 //Execution begins here
 int main() {
-    //Declare / Initialize variables
+    //Declare / Initialize variables / Initialize random seed
     string name;
+    string pCards = "", cCards = "";//Declare each players hand
+    srand(static_cast<unsigned int>(time(0)));
     
     //Process mapping
     cout<<"Welcome to BlackJack!"<<endl<<endl;
@@ -49,14 +51,68 @@ int main() {
     cout<<"Lets get started!"<<endl<<endl;
     
     cout<<"What is your name?: ";
-    cin>>name;
+    //cin>>name;
     cout<<endl;
     
     cout<<"Hello "<<name<<", you will be playing BlackJack against the computer"
             ", good luck!"<<endl;
     
+    pCards = genCrds(2);
+    cout<<pCards<<" "<<chekVal(pCards);
+    
     //Exit function and close files
-    //Close files, Dont forget
+    //Close files, Don't forget
     return 0;
 }
 
+string genCrds(short numCrds){
+    string temp = "";
+    for(short i = 0; i < numCrds; i++){
+        unsigned char temp2 = 0;
+        temp2 += (rand()%13 + 1);
+        switch(temp2){
+            case 1: temp += '2';break;
+            case 2: temp += '3';break;
+            case 3: temp += '4';break;
+            case 4: temp += '5';break;
+            case 5: temp += '6';break;
+            case 6: temp += '7';break;
+            case 7: temp += '8';break;
+            case 8: temp += '9';break;
+            case 9: temp += 'T';break;
+            case 10: temp += 'J';break;
+            case 11: temp += 'Q';break;
+            case 12: temp += 'K';break;
+            case 13: temp += 'A';break;
+        }
+    }
+    return temp;
+}
+
+short chekVal(string hand){
+    short total = 0;
+    short hasAce = 0;
+    for(short i = 0; i < hand.length(); i++){
+        char temp = hand[i];
+        switch(temp){
+            case '2': total += 2;break;
+            case '3': total += 3;break;
+            case '4': total += 4;break;
+            case '5': total += 5;break;
+            case '6': total += 6;break;
+            case '7': total += 7;break;
+            case '8': total += 8;break;
+            case '9': total += 9;break;
+            case 'T': total += 10;break;
+            case 'J': total += 10;break;
+            case 'Q': total += 10;break;
+            case 'K': total += 10;break;
+            case 'A': hasAce += 1;break;
+        }
+    }
+    
+    for(short i = 0; i < hasAce; i++){
+        ((total + 11)> 21?(total += 1):(total += 11));
+    }
+    return total;
+}
