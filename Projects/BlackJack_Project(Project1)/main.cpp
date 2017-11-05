@@ -39,14 +39,9 @@ short chekVal(string);
 int main() {
     //Declare / Initialize variables / Initialize random seed
     srand(static_cast<unsigned int>(time(0)));
-    string name;
-    string pCards, cCards;//Declare each players hand
-    
-    pCards = genCrds(2);
-    cCards = genCrds(2);
-    
-    short pTotal = chekVal(pCards), cTotal = chekVal(cCards);
-    
+    string name, input = "hit";
+    string pCards = genCrds(2), dCards = genCrds(2);//Declare each players hand
+    short pTotal = chekVal(pCards), cTotal = chekVal(dCards);
     
     //Process mapping
     cout<<"Welcome to BlackJack!"<<endl<<endl;
@@ -64,8 +59,22 @@ int main() {
     
     cout<<"Hello "<<name<<", you will be playing BlackJack against the computer"
             ", good luck!"<<endl;
-    
-    cout<<pCards<<" "<<outCrds(pCards)<<" "<<chekVal(pCards);//For testing
+    do{
+        if(chekVal(pCards) == 21){
+            cout<<"BlackJack! Your card value is 21 so you win! Come back soon!";
+            exit(EXIT_SUCCESS);
+        }
+        else{
+            cout<<"Your hand is "<<outCrds(pCards)<<" which totals to "<<
+                    chekVal(pCards)<<" would you like to hit(get another card), "
+                    "or stand?: ";
+            cin>>input;
+            cout<<endl;
+            pCards += genCrds(1);
+        }
+        
+        
+    }while(input == "Hit" || input == "hit");
     
     //Exit function and close files
     //Close files, Don't forget
