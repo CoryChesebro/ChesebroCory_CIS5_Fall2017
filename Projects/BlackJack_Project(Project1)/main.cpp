@@ -12,7 +12,6 @@
  * Have a function that generates the computers cards 
  * and puts them in a string?
  * 
- * 
  */
 
 //No variable names over 7 characters!!
@@ -33,6 +32,7 @@ using namespace std;
 string genCrds(short);
 string outCrds(string);
 short chekVal(string);
+short dealer(string);
 
 
 //Execution begins here
@@ -41,7 +41,7 @@ int main() {
     srand(static_cast<unsigned int>(time(0)));
     string name, input = "hit";
     string pCards = genCrds(2), dCards = genCrds(2);//Declare each players hand
-    short pTotal = chekVal(pCards), cTotal = chekVal(dCards);
+    short pTotal = chekVal(pCards), dTotal = chekVal(dCards);
     
     //Process mapping
     cout<<"Welcome to BlackJack!"<<endl<<endl;
@@ -54,7 +54,7 @@ int main() {
     cout<<"Lets get started!"<<endl<<endl;
     
     cout<<"What is your name?: ";
-    //cin>>name;
+    cin>>name;
     cout<<endl;
     
     cout<<"Hello "<<name<<", you will be playing BlackJack against the computer"
@@ -64,15 +64,38 @@ int main() {
             cout<<"BlackJack! Your card value is 21 so you win! Come back soon!";
             exit(EXIT_SUCCESS);
         }
+        else if(chekVal(pCards) > 21){
+            cout<<"Busted! You went over 21, so you lose!"<<endl;
+            exit(EXIT_SUCCESS);
+        }
         else{
             cout<<"Your hand is "<<outCrds(pCards)<<" which totals to "<<
                     chekVal(pCards)<<" would you like to hit(get another card), "
                     "or stand?: ";
             cin>>input;
             cout<<endl;
-            pCards += genCrds(1);
+            if(input == "hit" || input == "Hit"){
+               pCards += genCrds(1); 
+            }
+            else{
+                dTotal = dealer(dCards);
+                pTotal = chekVal(pCards);
+                if(pTotal > dTotal){
+                    cout<<"You win! Your total was "<<pTotal<<" and the dealers"
+                            " total was "<<dTotal;
+                    exit(EXIT_SUCCESS);
+                }
+                else if(pTotal == dTotal){
+                    cout<<"Draw! You and the dealer both had a total of "<<pTotal;
+                    exit(EXIT_SUCCESS);
+                }
+                else{
+                    cout<<"You lost! Your total was "<<pTotal<<" and the dealers"
+                            " total was "<<dTotal;
+                    exit(EXIT_SUCCESS);
+                }
+            }
         }
-        
         
     }while(input == "Hit" || input == "hit");
     
@@ -166,4 +189,17 @@ string outCrds(string hand){
         }
     }
     return outPut;
+}
+short dealer(string hand){
+    short val = chekVal(hand);
+    if(val > 21){
+        return 22;
+    }
+    else if(val < 17){
+        do{
+            val = chekVal(hand);
+            hand += genCrds(1);
+        }while(val < 17);
+    }
+    return val;
 }
