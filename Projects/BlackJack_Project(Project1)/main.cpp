@@ -32,12 +32,14 @@ using namespace std;
 //Function prototypes
 string genCrds(short);
 short chekVal(string);
+string outCrds(string);
 
 //Execution begins here
 int main() {
     //Declare / Initialize variables / Initialize random seed
     string name;
-    string pCards = "", cCards = "";//Declare each players hand
+    string pCards = genCrds(2), cCards = genCrds(2);//Declare each players hand
+    short pTotal = chekVal(pCards), cTotal = chekVal(cCards);
     srand(static_cast<unsigned int>(time(0)));
     
     //Process mapping
@@ -57,8 +59,7 @@ int main() {
     cout<<"Hello "<<name<<", you will be playing BlackJack against the computer"
             ", good luck!"<<endl;
     
-    pCards = genCrds(2);
-    cout<<pCards<<" "<<chekVal(pCards);
+    cout<<pCards<<" "<<outCrds(pCards)<<" "<<chekVal(pCards);//For testing
     
     //Exit function and close files
     //Close files, Don't forget
@@ -110,9 +111,44 @@ short chekVal(string hand){
             case 'A': hasAce += 1;break;
         }
     }
-    
     for(short i = 0; i < hasAce; i++){
         ((total + 11)> 21?(total += 1):(total += 11));
     }
     return total;
+}
+
+string outCrds(string hand){
+    string outPut;
+    for(short i = 0; i < hand.length(); i++){
+        char temp = hand[i];
+        switch(temp){
+            case '2': (i == hand.length() - 1)?(outPut += "2"):(outPut += "2, ")
+                    ;break;
+            case '3': (i == hand.length() - 1)?(outPut += "3"):(outPut += "3, ")
+                    ;break;
+            case '4': (i == hand.length() - 1)?(outPut += "4"):(outPut += "4, ")
+                    ;break;
+            case '5': (i == hand.length() - 1)?(outPut += "5"):(outPut += "5, ")
+                    ;break;
+            case '6': (i == hand.length() - 1)?(outPut += "6"):(outPut += "6, ")
+                    ;break;
+            case '7': (i == hand.length() - 1)?(outPut += "7"):(outPut += "7, ")
+                    ;break;
+            case '8': (i == hand.length() - 1)?(outPut += "8"):(outPut += "8, ")
+                    ;break;
+            case '9': (i == hand.length() - 1)?(outPut += "9"):(outPut += "9, ")
+                    ;break;
+            case 'T': (i == hand.length() - 1)?(outPut += "10"):(outPut += "10, ")
+                    ;break;
+            case 'J': (i == hand.length() - 1)?(outPut += "J"):(outPut += "J, ")
+                    ;break;
+            case 'Q': (i == hand.length() - 1)?(outPut += "Q"):(outPut += "Q, ")
+                    ;break;
+            case 'K': (i == hand.length() - 1)?(outPut += "K"):(outPut += "K, ")
+                    ;break;
+            case 'A': (i == hand.length() - 1)?(outPut += "A"):(outPut += "A, ")
+                    ;break;
+        }
+    }
+    return outPut;
 }
