@@ -68,6 +68,10 @@ int main() {
             cout<<"Busted! You went over 21, so you lose!"<<endl;
             exit(EXIT_SUCCESS);
         }
+        else if(chekVal(dCards) > 21){
+            cout<<"You win! The dealer busted!"<<endl;
+            exit(EXIT_SUCCESS);
+        }
         else{
             cout<<"Your hand is "<<outCrds(pCards)<<" which totals to "<<
                     chekVal(pCards)<<" would you like to hit(get another card), "
