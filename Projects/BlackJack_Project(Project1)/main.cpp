@@ -38,10 +38,13 @@ short dealer(string);
 //Execution begins here
 int main() {
     //Declare / Initialize variables / Initialize random seed
-    srand(static_cast<unsigned int>(time(0)));
-    string name, input = "hit";
+    srand(static_cast<unsigned int>(time(0)));//Set random seed
+    string name, input = "hit";//Initialize input and declare hit
     string pCards = genCrds(2), dCards = genCrds(2);//Declare each players hand
-    short pTotal = chekVal(pCards), dTotal = chekVal(dCards);
+    string winner;//String that holds who wins 
+    short pTotal = chekVal(pCards), dTotal = chekVal(dCards);//Initialize hand totals
+    ofstream out;//Output file
+    out.open("GameStats.dat", std::ios::app);//Opening the file to edit it
     
     //Process mapping
     cout<<"Welcome to BlackJack!"<<endl<<endl;
@@ -53,62 +56,98 @@ int main() {
             "Ace can count as 1 or 11 and face cards count as 10."<<endl<<endl;
     cout<<"Lets get started!"<<endl<<endl;
     
-    cout<<"What is your name?: ";
+    cout<<"What is your name?: ";//Get players name
     cin>>name;
     cout<<endl;
     
     cout<<"Hello "<<name<<", you will be playing BlackJack against the computer"
             ", good luck!"<<endl;
-    do{
-        if(chekVal(pCards) == 21){
+    do{//Start the game
+        if(chekVal(pCards) == 21){//Check if the player has 21 points
             cout<<"BlackJack! Your card value is 21 so you win! Come back soon!";
+            //File output if draw
+            (pTotal > dTotal)?(out<<"Winner is: "<<winner<<" with a score of: "
+                    <<pTotal<<endl):(out<<"Winner is: "<<winner<<" with a score of: "
+                    <<dTotal<<endl);
             exit(EXIT_SUCCESS);
         }
-        else if(chekVal(pCards) > 21){
+        else if(chekVal(pCards) > 21){//Check if player went over 21
             cout<<"Busted! You went over 21, so you lose!"<<endl;
+            winner = "Dealer";
+            //File output if player loses
+            (pTotal > dTotal)?(out<<"Winner is: "<<winner<<" with a score of: "
+                    <<pTotal<<endl):(out<<"Winner is: "<<winner<<" with a score of: "
+                    <<dTotal<<endl);
             exit(EXIT_SUCCESS);
         }
-        else if(chekVal(dCards) > 21){
+        else if(chekVal(dCards) > 21){//Check if dealer went over 21
             cout<<"You win! The dealer busted!"<<endl;
+            winner = name;
+            //File output if player wins
+            (pTotal > dTotal)?(out<<"Winner is: "<<winner<<" with a score of: "
+                    <<pTotal<<endl):(out<<"Winner is: "<<winner<<" with a score of: "
+                    <<dTotal<<endl);
             exit(EXIT_SUCCESS);
         }
-        else{
+        else{//Ask player if they want to hit or stand on their cards
             cout<<"Your hand is "<<outCrds(pCards)<<" which totals to "<<
                     chekVal(pCards)<<" would you like to hit(get another card), "
                     "or stand?: ";
             cin>>input;
             cout<<endl;
-            if(input == "hit" || input == "Hit"){
+            if(input == "hit" || input == "Hit"){//Add a card if the player wants to hit
                pCards += genCrds(1); 
             }
-            else{
+            else{//If they stand, make sure dealer follows rules and then compare card values
                 dTotal = dealer(dCards);
                 pTotal = chekVal(pCards);
-                if(pTotal > dTotal){
+                if(pTotal > dTotal){//If player has higher value, they win
                     cout<<"You win! Your total was "<<pTotal<<" and the dealers"
                             " total was "<<dTotal;
+                    winner = name;
+                    //File output if player wins
+                    (pTotal > dTotal)?(out<<"Winner is: "<<winner<<" with a score of: "
+                            <<pTotal<<endl):(out<<"Winner is: "<<winner<<" with a score of: "
+                            <<dTotal<<endl);
                     exit(EXIT_SUCCESS);
                 }
-                else if(pTotal == dTotal){
+                else if(pTotal == dTotal){//If they have the same value they draw
                     cout<<"Draw! You and the dealer both had a total of "<<pTotal;
+                    winner = "Draw";
+                    //File input if draw
+                    out<<"Winner is: "<<winner<<" with a score of: "
+                            <<pTotal<<endl;
                     exit(EXIT_SUCCESS);
                 }
-                else{
+                else if(dTotal > 21){
+                    cout<<"You win! The dealer went over 21"<<endl;
+                    winner = name;
+                    out<<"Winner is: "<<winner<<" with a score of: "
+                            <<pTotal<<endl;
+                    exit(EXIT_SUCCESS);
+                }
+                else{//Only option left is to lose
                     cout<<"You lost! Your total was "<<pTotal<<" and the dealers"
                             " total was "<<dTotal;
+                    winner = "Dealer";
+                    //File output if player loses
+                    (pTotal > dTotal)?(out<<"Winner is: "<<winner<<" with a score of: "
+                            <<pTotal<<endl):(out<<"Winner is: "<<winner<<" with a score of: "
+                            <<dTotal<<endl);
                     exit(EXIT_SUCCESS);
                 }
             }
-        }
-        
-    }while(input == "Hit" || input == "hit");
+        }  
+    }while(input == "Hit" || input == "hit");//Check if the while loop is still valid
     
     //Exit function and close files
     //Close files, Don't forget
+    out.close();
     return 0;
 }
 
-string genCrds(short numCrds){
+string genCrds(short numCrds){//Function to generate cards 
+    //(not true probabilities but close enough for this purpose)
     string temp = "";
     for(short i = 0; i < numCrds; i++){
         unsigned char temp2 = 0;
@@ -132,7 +171,7 @@ string genCrds(short numCrds){
     return temp;
 }
 
-short chekVal(string hand){
+short chekVal(string hand){//Declare function used to check hand values
     short total = 0;
     short hasAce = 0;
     for(short i = 0; i < hand.length(); i++){
@@ -159,7 +198,7 @@ short chekVal(string hand){
     return total;
 }
 
-string outCrds(string hand){
+string outCrds(string hand){//Declare function that reads out the players cards
     string outPut = "";
     for(short i = 0; i < hand.length(); i++){
         char temp = hand[i];
@@ -194,7 +233,8 @@ string outCrds(string hand){
     }
     return outPut;
 }
-short dealer(string hand){
+short dealer(string hand){//Function that makes sure the dealer follows official rules of the game
+    //basically just hit if < 17
     short val = chekVal(hand);
     if(val > 21){
         return 22;
