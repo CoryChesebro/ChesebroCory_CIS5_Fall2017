@@ -1,0 +1,59 @@
+/* 
+ * File:   main.cpp
+ * Author: Cory
+ * Created on November 4, 2017, 8:18 PM
+ */
+/* Make an array to hold cards and have a  
+ * function that iterates over them to check value
+ * 
+ * Have a do-while loop for the control of functions
+ * 
+ * Have a function that generates the computers cards 
+ * and puts them in a string?
+ * 
+ */
+//No variable names over 7 characters!!
+//Global constants
+//Function prototypes
+//Execution begins here
+    //Declare / Initialize variables / Initialize random seed
+    //Set random seed
+    //Initialize input and declare hit
+    //Declare each players hand
+    //String that holds who wins 
+    //Initialize hand totals
+    //Output file
+    //Opening the file to edit it    
+    //Process mapping
+	//Get players name   
+    //Start the game
+        //Check if the player has 21 points
+            //File output if draw            
+        //Check if player went over 21
+            //File output if player loses            
+        //Check if dealer went over 21
+            //File output if player wins            
+        //Ask player if they want to hit or stand on their cards
+            //Add a card if the player wants to hit
+            //If they stand, make sure dealer follows rules and then compare card values
+                //If player has higher value, they win
+                    //File output if player wins   
+                //If they have the same value they draw
+                    //File input if draw 
+                //Check if the dealer busted
+                    //File output if player wins
+                //Only option left is to lose
+                    //File output if player loses   
+    //Check if the while loop is still valid
+    //Exit function and close files
+    //Close files, Don't forget
+
+//Function to generate cards 
+    //(not true probabilities but close enough for this purpose)
+    
+//Declare function used to check hand values
+    
+//Declare function that reads out the players cards
+    
+//Function that makes sure the dealer follows official rules of the game
+    //basically just hit if < 17 
