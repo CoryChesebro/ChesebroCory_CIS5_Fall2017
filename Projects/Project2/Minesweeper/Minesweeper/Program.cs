@@ -13,49 +13,61 @@
 
 class Program {
     static void Main() {
-        //Set random seed
+        //Set random seed / Instatiate Oject
         Random rnd = new Random();
+        Program prg = new Program();
 
         //Declare variables
         int size = 10;//Testing purposes, change this to input later
         char[,] mines = new char[size, size];
         char[,] board = new char[size, size];
 
-        initArr(mines, size);
-        initArr(board, size);
+        prg.InitArr(mines, size);
+        prg.InitArr(board, size);
 
-        genMines(mines, rnd);
-        genMines(mines, rnd);
-        genMines(mines, rnd);
+        prg.GenMines(mines, rnd);
+        prg.GenMines(mines, rnd);
+        prg.GenMines(mines, rnd);
 
-        prntArr(board, size);
+        prg.PrntArr(board, size);
         Console.WriteLine("");
-        prntArr(mines, size);
+        prg.PrntArr(mines, size);
 
         Console.ReadLine();
     }
 
-    static void initArr(char[,] arr, int size) {
-        for (short i = 0; i < size - 1; i++) {
-            for (short j = 0; j < size - 1; j++) {
-                arr[i, j] = '0';
+    public void InitArr(char[,] arr, int size) {
+        for (short i = 0; i < size; i++) {
+            for (short j = 0; j < size; j++) {
+                arr[i, j] = 'X';
             }
         }
     }
 
-    static void genMines(char[,] arr, Random rnd) {
-        arr[rnd.Next(0, 9), rnd.Next(0, 9)] = 'M';
+    public void GenMines(char[,] arr, Random rnd) {
+        int temp1, temp2;
+        temp1 = rnd.Next(0, 9);
+        temp2 = rnd.Next(0, 9);
+        arr[temp1, temp2] = '-';
+        Console.Write(temp1.ToString());
+        Console.WriteLine(temp2.ToString());
 
     }
 
-    static void prntArr(char[,] arr, int size) {
-        for (short i = 0; i < size - 1; i++) {
-            for (short j = 0; j < size - 1; j++) {
+    public void PrntArr(char[,] arr, int size) {
+        for (short i = 0; i < size; i++) {
+            for(short j = 0; j < size; j++) {
                 Console.Write(arr[i, j]);
-                Console.Write(" ");
+                Console.Write("");
             }
             Console.WriteLine("");
         }
     }
 
+    public void MakeBrd(char[,] arr, int size) {
+
+    }
+
+// - - - - - - - - - Keep code above this - - - - - - - - - - - - - -
 }
+    
