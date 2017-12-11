@@ -55,22 +55,21 @@ class Program {
 
     }
 
-    public void PrntArr(char[,] arr, bool [,] arr2, int size) {
+    public void PrntArr(char[,] arr, bool[,] arr2, int size) {
         Console.Clear();
         for (short i = 0; i < size; i++) {
-            for(short j = 0; j < size; j++) {
+            for (short j = 0; j < size; j++) {
                 if (arr2[i, j] == false) {
                     Console.Write('X');
                     Console.Write(" ");
                 }
-                else if (arr[i,j] == '*') {
+                else if (arr[i, j] == '*') {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write(arr[i, j]);
                     Console.Write(" ");
                     Console.ResetColor();
                 }
                 else {
-                    //Console.Write(arr[i, j]);
                     Console.Write("  ");
                 }
             }
@@ -78,7 +77,7 @@ class Program {
         }
     }
 
-    public void MakeBrd(char[,] arr, int size) {//For use later
+    public void MakeBrd(char[,] arr, int size) {//Find bombs and check around them, watch for other bombs and oob
         for (short i = 0; i < size; i++) {//Cols
             for (short j = 0; j < size; j++) {//Rows
                 if (arr[i, j] == '*') {
@@ -88,13 +87,13 @@ class Program {
         }
     }
 
-    public void Input(ref bool [,] arr) {
+    public void Input(ref bool[,] arr) {//Super validation
         int x = -1;
         int y = -1;
         do {
             Console.Write("Enter your guess here: ");
             string inp = Console.ReadLine();
-            char [] chars = inp.ToCharArray();
+            char[] chars = inp.ToCharArray();
             for (short i = 0; i < chars.Length; i++) {
                 if (chars[i] >= '0' && chars[i] <= '9') {
                     if (x < 0) {
@@ -106,9 +105,8 @@ class Program {
                 }
             }
         } while (x < 0 || y < 0);
-    
+
         arr[x, y] = true;//True that the position was picked
     }
-// <- - - - - - - - - - - -  Keep code above this - - - - - - - - - - - - - -> //
+    // <- - - - - - - - - - - -  Keep code above this - - - - - - - - - - - - - -> //
 }
-    
