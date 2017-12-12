@@ -157,12 +157,12 @@ class Game {
                             arr[i, j + 1] = SetNum(arr[i, j + 1]);
                         }
                     }
-                    else if (j == 0) {
+                    else if (j == 0) {//Checks top row
                         arr[i + 1, j] = SetNum(arr[i + 1, j]);
                         arr[i - 1, j] = SetNum(arr[i - 1, j]);
                         arr[i, j + 1] = SetNum(arr[i, j + 1]);
                     }
-                    else if (j == size - 1) {
+                    else if (j == size - 1) {//Checks bottom row
                         arr[i + 1, j] = SetNum(arr[i + 1, j]);
                         arr[i - 1, j] = SetNum(arr[i - 1, j]);
                         arr[i, j - 1] = SetNum(arr[i, j - 1]);
@@ -170,7 +170,7 @@ class Game {
                     else {//Checks anything inside inner boundary
                         arr[i - 1, j] = SetNum(arr[i - 1, j]);
                         arr[i - 1, j + 1] = SetNum(arr[i - 1, j + 1]);
-                        arr[i - 1, j - 1] = SetNum(arr[i - 1, j + 1]);
+                        arr[i - 1, j - 1] = SetNum(arr[i - 1, j - 1]);
                         arr[i + 1, j] = SetNum(arr[i + 1, j]);
                         arr[i + 1, j + 1] = SetNum(arr[i + 1, j + 1]);
                         arr[i + 1, j - 1] = SetNum(arr[i + 1, j - 1]);
