@@ -9,13 +9,11 @@
 //Need to implement everything for CSC-5 requirements
 //Pre - generate board in mines array
 
-
-
 class Program {
     static void Main() {
         //Set random seed / Instatiate Oject
         Random rnd = new Random();
-        Program prg = new Program();
+        Game game = new Game();
 
         //Declare variables
         int size = 10;//Testing purposes, change this to input later
@@ -23,18 +21,35 @@ class Program {
         char[,] mines = new char[size, size];
         bool[,] board = new bool[size, size];
 
-        prg.InitArr(board, size);
+        game.InitArr(board, size);
+        game.InitArr(mines, size);
 
-        prg.GenMines(mines, rnd);
-        prg.GenMines(mines, rnd);
-        prg.GenMines(mines, rnd);
+        game.GenMines(mines, rnd);
+        game.GenMines(mines, rnd);
+        game.GenMines(mines, rnd);
+
+        game.MakeBrd(mines, size);
+        game.DbgPrnt(mines, size);
+        
+        /*
         int temp = 10;
         do {
-            prg.Input(ref board);
-            prg.PrntArr(mines, board, size);
+            game.Input(ref board);
+            game.PrntArr(mines, board, size);
             temp--;
         } while (temp > 0);
+        */
         Console.ReadLine();
+    }
+}
+
+class Game { 
+    public void InitArr(char[,] arr, int size) {
+        for (short i = 0; i < size; i++) {
+            for (short j = 0; j < size; j++) {
+                arr[i, j] = '0';
+            }
+        }
     }
 
     public void InitArr(bool[,] arr, int size) {
@@ -46,13 +61,40 @@ class Program {
     }
 
     public void GenMines(char[,] arr, Random rnd) {
-        int temp1, temp2;
-        temp1 = rnd.Next(0, 9);
-        temp2 = rnd.Next(0, 9);
-        arr[temp1, temp2] = '*';
-        Console.Write(temp1.ToString());
-        Console.WriteLine(temp2.ToString());
+        bool dup = false;
+        do {
+            int temp1, temp2;
 
+            temp1 = rnd.Next(0, 9);
+            temp2 = rnd.Next(0, 9);
+
+            if (arr[temp1, temp2] == '*') {
+                dup = true;
+            }
+            else {
+                arr[temp1, temp2] = '*';
+                dup = false;
+            }
+
+        } while (dup);
+
+    }
+
+    public void DbgPrnt(char [,] arr, int size) {
+        Console.Clear();
+        for(short i = 0; i < size; i++) {
+            for(short j = 0; j < size; j++) {
+                if(arr[i,j] == '0') {
+                    Console.Write('X');
+                    Console.Write(" ");
+                }
+                else {
+                    Console.Write(arr[i, j]);
+                    Console.Write(" ");
+                }
+            }
+            Console.WriteLine("");
+        }
     }
 
     public void PrntArr(char[,] arr, bool[,] arr2, int size) {
@@ -77,11 +119,54 @@ class Program {
         }
     }
 
-    public void MakeBrd(char[,] arr, int size) {//Find bombs and check around them, watch for other bombs and oob
+    public void MakeBrd(char[,] arr, int size) {//Find bombs and check around them, watch for other bombs and out of bounds of the array
         for (short i = 0; i < size; i++) {//Cols
             for (short j = 0; j < size; j++) {//Rows
                 if (arr[i, j] == '*') {
-
+                    if (i == 0) {
+                        if (j == 0) {
+                            arr[i + 1, j] = SetNum(arr[i + 1, j]);
+                            arr[i, j + 1] = SetNum(arr[i, j + 1]);
+                            arr[i + 1, j + 1] = SetNum(arr[i + 1, j + 1]);
+                        }
+                        else if (j == size - 1) {
+                            arr[i + 1, j] = SetNum(arr[i + 1, j]);
+                            arr[i, j - 1] = SetNum(arr[i, j - 1]);
+                            arr[i + 1, j - 1] = SetNum(arr[i + 1, j - 1]);
+                        }
+                        else {
+                            arr[i + 1, j] = SetNum(arr[i + 1, j]);
+                            arr[i, j - 1] = SetNum(arr[i, j - 1]);
+                            arr[i, j + 1] = SetNum(arr[i, j + 1]);
+                        }
+                    }
+                    else if (i == size - 1) {
+                        if (j == 0) {
+                            arr[i - 1, j] = SetNum(arr[i - 1, j]);
+                            arr[i, j + 1] = SetNum(arr[i, j + 1]);
+                            arr[i - 1, j + 1] = SetNum(arr[i - 1, j + 1]);
+                        }
+                        else if (j == size - 1) {
+                            arr[i - 1, j] = SetNum(arr[i - 1, j]);
+                            arr[i, j - 1] = SetNum(arr[i, j - 1]);
+                            arr[i - 1, j - 1] = SetNum(arr[i - 1, j - 1]);
+                        }
+                        else {
+                            arr[i - 1, j] = SetNum(arr[i - 1, j]);
+                            arr[i, j - 1] = SetNum(arr[i, j - 1]);
+                            arr[i, j + 1] = SetNum(arr[i, j + 1]);
+                        }
+                    }
+                    else {
+                        arr[i - 1, j] = SetNum(arr[i - 1, j]);
+                        arr[i - 1, j + 1] = SetNum(arr[i - 1, j + 1]);
+                        arr[i - 1, j - 1] = SetNum(arr[i - 1, j + 1]);
+                        arr[i + 1, j] = SetNum(arr[i + 1, j]);
+                        arr[i + 1, j + 1] = SetNum(arr[i + 1, j + 1]);
+                        arr[i + 1, j - 1] = SetNum(arr[i + 1, j - 1]);
+                        arr[i, j - 1] = SetNum(arr[i, j - 1]);
+                        arr[i, j + 1] = SetNum(arr[i, j + 1]);
+                    }
                 }
             }
         }
@@ -105,8 +190,41 @@ class Program {
                 }
             }
         } while (x < 0 || y < 0);
-
         arr[x, y] = true;//True that the position was picked
     }
+
+    public char SetNum(char pos) {
+        char tmp = '*';
+
+        if (pos == '0') {
+            tmp = '1';
+        }
+        if (pos == '1') {
+            tmp = '2';
+        }
+        if (pos == '2') {
+            tmp = '3';
+        }
+        if (pos == '3') {
+            tmp = '4';
+        }
+        if (pos == '4') {
+            tmp = '5';
+        }
+        if (pos == '5') {
+            tmp = '6';
+        }
+        if (pos == '6') {
+            tmp = '7';
+        }
+        if (pos == '7') {
+            tmp = '8';
+        }
+        if (pos == '8') {
+            tmp = '9';
+        }
+        return tmp;
+    }
+
     // <- - - - - - - - - - - -  Keep code above this - - - - - - - - - - - - - -> //
 }
