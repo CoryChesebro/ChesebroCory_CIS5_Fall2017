@@ -123,41 +123,51 @@ class Game {
         for (short i = 0; i < size; i++) {//Cols
             for (short j = 0; j < size; j++) {//Rows
                 if (arr[i, j] == '*') {
-                    if (i == 0) {
-                        if (j == 0) {
+                    if (i == 0) {//Left side checkig corners
+                        if (j == 0) {//Checks top left 
                             arr[i + 1, j] = SetNum(arr[i + 1, j]);
                             arr[i, j + 1] = SetNum(arr[i, j + 1]);
                             arr[i + 1, j + 1] = SetNum(arr[i + 1, j + 1]);
                         }
-                        else if (j == size - 1) {
+                        else if (j == size - 1) {//Checks bottom left
                             arr[i + 1, j] = SetNum(arr[i + 1, j]);
                             arr[i, j - 1] = SetNum(arr[i, j - 1]);
                             arr[i + 1, j - 1] = SetNum(arr[i + 1, j - 1]);
                         }
-                        else {
+                        else {//Checks left side
                             arr[i + 1, j] = SetNum(arr[i + 1, j]);
                             arr[i, j - 1] = SetNum(arr[i, j - 1]);
                             arr[i, j + 1] = SetNum(arr[i, j + 1]);
                         }
                     }
-                    else if (i == size - 1) {
-                        if (j == 0) {
+                    else if (i == size - 1) {//Right side checking corners
+                        if (j == 0) {//Checks top right
                             arr[i - 1, j] = SetNum(arr[i - 1, j]);
                             arr[i, j + 1] = SetNum(arr[i, j + 1]);
                             arr[i - 1, j + 1] = SetNum(arr[i - 1, j + 1]);
                         }
-                        else if (j == size - 1) {
+                        else if (j == size - 1) {//Checks bottom right
                             arr[i - 1, j] = SetNum(arr[i - 1, j]);
                             arr[i, j - 1] = SetNum(arr[i, j - 1]);
                             arr[i - 1, j - 1] = SetNum(arr[i - 1, j - 1]);
                         }
-                        else {
+                        else {//Checks right side
                             arr[i - 1, j] = SetNum(arr[i - 1, j]);
                             arr[i, j - 1] = SetNum(arr[i, j - 1]);
                             arr[i, j + 1] = SetNum(arr[i, j + 1]);
                         }
                     }
-                    else {
+                    else if (j == 0) {
+                        arr[i + 1, j] = SetNum(arr[i + 1, j]);
+                        arr[i - 1, j] = SetNum(arr[i - 1, j]);
+                        arr[i, j + 1] = SetNum(arr[i, j + 1]);
+                    }
+                    else if (j == size - 1) {
+                        arr[i + 1, j] = SetNum(arr[i + 1, j]);
+                        arr[i - 1, j] = SetNum(arr[i - 1, j]);
+                        arr[i, j - 1] = SetNum(arr[i, j - 1]);
+                    }
+                    else {//Checks anything inside inner boundary
                         arr[i - 1, j] = SetNum(arr[i - 1, j]);
                         arr[i - 1, j + 1] = SetNum(arr[i - 1, j + 1]);
                         arr[i - 1, j - 1] = SetNum(arr[i - 1, j + 1]);
