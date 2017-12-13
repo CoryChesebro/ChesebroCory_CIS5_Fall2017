@@ -7,7 +7,7 @@ using System.Linq;
 //Need function to output arrays
 //Need function that counts mines around the position that was chosen
 //Pre - generate board in mines array
-//Implement flags, score, name, difficulties
+//Implement flags, score, name, difficulties - Didnt do it, not enough time to meet deadline
 //IsAdjacent function to control spread, have it check if there is an X adjacent to and change it to green and true so it shows as clean on next print
 //Bomb count for win condition
 
@@ -20,28 +20,31 @@ class Program {
         //Declare variables
         short size = 10;//Testing purposes, change this to input later
         short num = 25;//Number of bombs, change to input later
-
         bool[,] board = new bool[size, size];
         char[,] mines = new char[size, size];
         bool[,] picks = new bool[size, size];
 
+        //Get everthing ready / Initialize arrays
         game.InitArr(board, size);
         game.InitArr(picks, size);
         game.InitArr(mines, size);
-
         game.GenMines(mines, rnd, num);
-
         game.MakeBrd(mines, size);
-        game.DbgPrnt(mines, size);
 
-        
-        int temp = 10;
+        Console.WriteLine("Welcome to my Minesweeper!");
+        Console.WriteLine("In this game your goal is to clear all the places on the board and avoid all the mines.");
+        Console.WriteLine("You will have as many turns as you like, the game will end once you clear all the spaces with no bombs or when you type exit as your next guess");
+
         do {
             game.Input(board, mines, picks);
             game.PrntArr(mines, board, picks, size);
-            game.DbgPrnt(mines, size);
-            temp--;
-        } while (temp > 0);
+            if (game.ChckWin(picks, num)) {
+                Console.Clear();
+                Console.WriteLine("You won!!!");
+                Console.ReadLine();
+                System.Environment.Exit(0);
+            }
+        } while (true);
         
         //game.DbgInp(board, mines, picks);
         Console.ReadLine();
@@ -333,6 +336,11 @@ class Game {
                 }
             }
         } while (x < 0 || y < 0);
+        if (arr2[x, y] == '*') {
+            Console.WriteLine("You lost! Better luck next time.");
+            Console.ReadLine();
+            System.Environment.Exit(0);
+        }
         arr3[x, y] = true;//True that the position was picked
         Adjcnt(arr, arr2, x, y);
     }
@@ -665,5 +673,23 @@ class Game {
             }
         }
     }
+
+    public bool ChckWin(bool[,] picks, short bombs) {
+        short temp = 0;
+        for(short i = 0; i < picks.Length; i++) {
+            for(short j = 0; j < picks.Length; j++) {
+                if (!picks[i, j]) {
+                    temp++;
+                }
+            }
+        }
+        if (temp == bombs) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
     // <- - - - - - - - - - - -  Keep code above this - - - - - - - - - - - - - -> //
 }
