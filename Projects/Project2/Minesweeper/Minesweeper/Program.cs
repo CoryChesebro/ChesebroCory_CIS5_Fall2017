@@ -6,8 +6,9 @@
 //Need function to initialize arrays
 //Need function to output arrays
 //Need function that counts mines around the position that was chosen
-//Need to implement everything for CSC-5 requirements
 //Pre - generate board in mines array
+//Implement flags, score, name, difficulties
+// IsAdjacent function to control spread, have it check if there is an X adjacent to and change it to green and true so it shows as clean on next print
 
 class Program {
     static void Main() {
@@ -16,29 +17,27 @@ class Program {
         Game game = new Game();
 
         //Declare variables
-        int size = 10;//Testing purposes, change this to input later
-
+        short size = 10;//Testing purposes, change this to input later
+        short num = 25 ;//Number of bombs, change to input later
         char[,] mines = new char[size, size];
         bool[,] board = new bool[size, size];
 
         game.InitArr(board, size);
         game.InitArr(mines, size);
 
-        game.GenMines(mines, rnd);
-        game.GenMines(mines, rnd);
-        game.GenMines(mines, rnd);
+        game.GenMines(mines, rnd, num);
 
         game.MakeBrd(mines, size);
         game.DbgPrnt(mines, size);
         
-        /*
+        
         int temp = 10;
         do {
-            game.Input(ref board);
+            game.Input(board);
             game.PrntArr(mines, board, size);
             temp--;
         } while (temp > 0);
-        */
+    
         Console.ReadLine();
     }
 }
@@ -60,28 +59,26 @@ class Game {
         }
     }
 
-    public void GenMines(char[,] arr, Random rnd) {
-        bool dup = false;
-        do {
-            int temp1, temp2;
-
-            temp1 = rnd.Next(0, 9);
-            temp2 = rnd.Next(0, 9);
-
-            if (arr[temp1, temp2] == '*') {
-                dup = true;
-            }
-            else {
-                arr[temp1, temp2] = '*';
-                dup = false;
-            }
-
-        } while (dup);
-
+    public void GenMines(char[,] arr, Random rnd, short num) {
+        for (short i = 0; i < num; i++) {
+            bool dup = false;//Check for duplicates
+            do {
+                int temp1, temp2;
+                temp1 = rnd.Next(0, 9);
+                temp2 = rnd.Next(0, 9);
+                if (arr[temp1, temp2] == '*') {
+                    dup = true;//If this bomb is a duplicate, loop again
+                }
+                else {
+                    arr[temp1, temp2] = '*';
+                    dup = false;//If the bomb isnt a duplicate, end the loop and move on.
+                }
+            } while (dup);
+        }
     }
 
     public void DbgPrnt(char [,] arr, int size) {
-        Console.Clear();
+        //Console.Clear();
         for(short i = 0; i < size; i++) {
             for(short j = 0; j < size; j++) {
                 if(arr[i,j] == '0') {
@@ -89,8 +86,10 @@ class Game {
                     Console.Write(" ");
                 }
                 else {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write(arr[i, j]);
                     Console.Write(" ");
+                    Console.ResetColor();
                 }
             }
             Console.WriteLine("");
@@ -168,26 +167,31 @@ class Game {
                         arr[i, j - 1] = SetNum(arr[i, j - 1]);
                     }
                     else {//Checks anything inside inner boundary
-                        arr[i - 1, j] = SetNum(arr[i - 1, j]);
-                        arr[i - 1, j + 1] = SetNum(arr[i - 1, j + 1]);
-                        arr[i - 1, j - 1] = SetNum(arr[i - 1, j - 1]);
-                        arr[i + 1, j] = SetNum(arr[i + 1, j]);
-                        arr[i + 1, j + 1] = SetNum(arr[i + 1, j + 1]);
-                        arr[i + 1, j - 1] = SetNum(arr[i + 1, j - 1]);
-                        arr[i, j - 1] = SetNum(arr[i, j - 1]);
-                        arr[i, j + 1] = SetNum(arr[i, j + 1]);
+                        for(short k = -1; k < 2; k++) {
+                            for(short l = -1; l < 2; l++) {
+                                if(!(i == 0) && !(j == 0)) {
+                                    arr[i + k, j + l] = SetNum(arr[i + k, j + l]);
+                                    
+                                    //DbgPrnt(arr, size); //For dbg
+                                    //Console.WriteLine(""); //for dbg
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
 
-    public void Input(ref bool[,] arr) {//Super validation
+    public void Input(bool[,] arr) {//Super validation
         int x = -1;
         int y = -1;
         do {
             Console.Write("Enter your guess here: ");
             string inp = Console.ReadLine();
+            if (inp == "exit" || inp == "Exit") {
+                System.Environment.Exit(0);
+            }
             char[] chars = inp.ToCharArray();
             for (short i = 0; i < chars.Length; i++) {
                 if (chars[i] >= '0' && chars[i] <= '9') {
@@ -201,9 +205,10 @@ class Game {
             }
         } while (x < 0 || y < 0);
         arr[x, y] = true;//True that the position was picked
+
     }
 
-    public char SetNum(char pos) {
+    public char SetNum(char pos) {//Increments character
         char tmp = '*';
 
         if (pos == '0') {
@@ -234,6 +239,10 @@ class Game {
             tmp = '9';
         }
         return tmp;
+    }
+    
+    public void Adjcnt() {
+
     }
 
     // <- - - - - - - - - - - -  Keep code above this - - - - - - - - - - - - - -> //
