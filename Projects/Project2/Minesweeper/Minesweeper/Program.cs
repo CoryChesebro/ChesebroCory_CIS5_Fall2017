@@ -8,7 +8,8 @@
 //Need function that counts mines around the position that was chosen
 //Pre - generate board in mines array
 //Implement flags, score, name, difficulties
-// IsAdjacent function to control spread, have it check if there is an X adjacent to and change it to green and true so it shows as clean on next print
+//IsAdjacent function to control spread, have it check if there is an X adjacent to and change it to green and true so it shows as clean on next print
+//Bomb count for win condition
 
 class Program {
     static void Main() {
@@ -28,12 +29,12 @@ class Program {
         game.GenMines(mines, rnd, num);
 
         game.MakeBrd(mines, size);
-        game.DbgPrnt(mines, size);
+        //game.DbgPrnt(mines, size);
         
         
         int temp = 10;
         do {
-            game.Input(board);
+            game.Input(board, mines);
             game.PrntArr(mines, board, size);
             temp--;
         } while (temp > 0);
@@ -169,12 +170,10 @@ class Game {
                     else {//Checks anything inside inner boundary
                         for(short k = -1; k < 2; k++) {
                             for(short l = -1; l < 2; l++) {
-                                if(!(i == 0) && !(j == 0)) {
-                                    arr[i + k, j + l] = SetNum(arr[i + k, j + l]);
-                                    
-                                    //DbgPrnt(arr, size); //For dbg
-                                    //Console.WriteLine(""); //for dbg
-                                }
+                                arr[i + k, j + l] = SetNum(arr[i + k, j + l]);
+                                //DbgPrnt(arr, size); //For dbg
+                                //Console.WriteLine(""); //for dbg
+                                
                             }
                         }
                     }
@@ -183,7 +182,7 @@ class Game {
         }
     }
 
-    public void Input(bool[,] arr) {//Super validation
+    public void Input(bool[,] arr, char [,] arr2) {//Super validation
         int x = -1;
         int y = -1;
         do {
@@ -205,7 +204,7 @@ class Game {
             }
         } while (x < 0 || y < 0);
         arr[x, y] = true;//True that the position was picked
-
+        Adjcnt(arr, arr2, x, y);
     }
 
     public char SetNum(char pos) {//Increments character
@@ -240,10 +239,23 @@ class Game {
         }
         return tmp;
     }
-    
-    public void Adjcnt() {
 
+    public void Adjcnt(bool[,] boolArr, char[,] charArr, int x, int y) {
+        char[] chars = new char [] {'1','2','3','4','5','6','7','8'};
+        for (short k = -1; k < 2; k++) {
+            for (short l = -1; l < 2; l++) {
+                try {
+                    if (!(charArr[x + k, y + l] == '*')) {
+                        boolArr[x + k, y + l] = true;//True means tile shows when print functiong iterates
+                        if (charArr[x + k, y + l] == '0') {
+                            Adjcnt(boolArr, charArr, (x + k), (y + l));
+                        }
+                    }
+                }
+                catch {
+                }
+            }
+        }
     }
-
     // <- - - - - - - - - - - -  Keep code above this - - - - - - - - - - - - - -> //
 }
