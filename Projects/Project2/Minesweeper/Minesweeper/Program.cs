@@ -240,19 +240,161 @@ class Game {
         return tmp;
     }
 
-    public void Adjcnt(bool[,] boolArr, char[,] charArr, int x, int y) {
-        char[] chars = new char [] {'1','2','3','4','5','6','7','8'};
-        for (short k = -1; k < 2; k++) {
-            for (short l = -1; l < 2; l++) {
-                try {
+    public void Adjcnt(bool[,] boolArr, char[,] charArr, int x, int y) {//x = i, y = j for reference
+        int tmpx, tmpy;
+        tmpx = x;
+        tmpy = y;
+        if (x == 0) {//Left side checkig corners
+            if (y == 0) {//Checks top left i + 1, j + 1
+                tmpx = x + 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                tmpy = y + 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                tmpx = x + 1;
+                tmpy = y + 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+            }
+            else if (y == charArr.Length - 1) {//Checks bottom left i + 1, j - 1
+                tmpx = x + 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                tmpy = y - 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                tmpx = x + 1;
+                tmpy = y + 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+            }
+            else {//Checks left side i + 1, j +- 1
+                tmpx = x + 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                tmpy = y + 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                y -= 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                x += 1;
+                y += 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                x += 1;
+                y -= 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+            }
+        }
+        else if (x == charArr.Length - 1) {//Right side checking corners
+            if (y == 0) {//Checks top right i - 1, j +- 1
+                x -= 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                y -= 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                y += 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                x -= 1;
+                y -= 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+                x -= 1;
+                y += 1;
+                if (!(charArr[x, y] == '*')) {
+                    boolArr[x, y] = true;//True means tile shows when print function iterates
+                    if (charArr[x, y] == '0') {
+                        Adjcnt(boolArr, charArr, (x), (y));
+                    }
+                }
+            }
+            else if (y == charArr.Length - 1) {//Checks bottom right i - 1, j - 1
+
+            }
+            else {//Checks right side i - 1, j +- 1
+
+            }
+        }
+        else if (y == 0) {//Checks top row i +- 1, j + 1
+
+        }
+        else if (y == charArr.Length - 1) {//Checks bottom row i +- 1, j - 1
+
+        }
+        else {//Checks anything inside inner boundary i +- 1, j +- 1
+            for (short k = -1; k < 2; k++) {
+                for (short l = -1; l < 2; l++) {
                     if (!(charArr[x + k, y + l] == '*')) {
-                        boolArr[x + k, y + l] = true;//True means tile shows when print functiong iterates
+                        boolArr[x + k, y + l] = true;//True means tile shows when print function iterates
                         if (charArr[x + k, y + l] == '0') {
                             Adjcnt(boolArr, charArr, (x + k), (y + l));
                         }
                     }
-                }
-                catch {
                 }
             }
         }
