@@ -34,16 +34,16 @@ class Program {
         game.MakeBrd(mines, size);
         game.DbgPrnt(mines, size);
 
-        /*
-        int temp = 100;
+        
+        int temp = 10;
         do {
             game.Input(board, mines, picks);
             game.PrntArr(mines, board, picks, size);
             game.DbgPrnt(mines, size);
             temp--;
         } while (temp > 0);
-        */
-        game.DbgInp(board, mines, picks);
+        
+        //game.DbgInp(board, mines, picks);
         Console.ReadLine();
     }
 }
@@ -165,72 +165,75 @@ class Game {
                     Console.Write('X');
                     Console.Write(" ");
                 }
+                else if (arr[i, j] == '*') {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write(arr[i, j]);
+                    Console.ResetColor();
+                    Console.Write(" ");
+                }
                 else {
-                    if (arr[i,j] == '*') {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write(arr[i, j]);
-                        Console.ResetColor();
-                        Console.Write(" ");
-                    }
-                    else if (arr[i, j] == '0') {
-                        Console.BackgroundColor = ConsoleColor.Green;
-                        Console.Write(" ");
-                        Console.ResetColor();
-                        Console.Write(" ");
-                    }
-                    else if (arr2[i, j] && arr[i, j] == '1') {
-                        Console.ForegroundColor = ConsoleColor.DarkGreen;
-                        Console.Write(arr[i, j]);
-                        Console.Write(" ");
-                        Console.ResetColor();
-                    }
-                    else if (arr2[i, j] && arr[i, j] == '2') {
-                        Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write(arr[i, j]);
-                        Console.Write(" ");
-                        Console.ResetColor();
-                    }
-                    else if (arr2[i, j] && arr[i, j] == '3') {
-                        Console.ForegroundColor = ConsoleColor.DarkYellow;
-                        Console.Write(arr[i, j]);
-                        Console.Write(" ");
-                        Console.ResetColor();
-                    }
-                    else if (arr2[i, j] && arr[i, j] == '4') {
-                        Console.ForegroundColor = ConsoleColor.Cyan;
-                        Console.Write(arr[i, j]);
-                        Console.Write(" ");
-                        Console.ResetColor();
-                    }
-                    else if (arr2[i, j] && arr[i, j] == '5') {
-                        Console.ForegroundColor = ConsoleColor.DarkCyan;
-                        Console.Write(arr[i, j]);
-                        Console.Write(" ");
-                        Console.ResetColor();
-                    }
-                    else if (arr2[i, j] && arr[i, j] == '6') {
-                        Console.ForegroundColor = ConsoleColor.Magenta;
-                        Console.Write(arr[i, j]);
-                        Console.Write(" ");
-                        Console.ResetColor();
-                    }
-                    else if (arr2[i, j] && arr[i, j] == '7') {
-                        Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                        Console.Write(arr[i, j]);
-                        Console.Write(" ");
-                        Console.ResetColor();
-                    }
-                    else if (arr2[i, j] && arr[i, j] == '8') {
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.Write(arr[i, j]);
-                        Console.Write(" ");
-                        Console.ResetColor();
-                    }
-                    else {
-                        Console.Write('X');
-                        Console.Write(" ");
+                    if (arr2[i, j]) {
+                        if (arr[i, j] == '0') {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.Write("-");
+                            Console.ResetColor();
+                            Console.Write(" ");
+                        }
+                        else if (arr2[i, j] && arr[i, j] == '1') {
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                            Console.Write(arr[i, j]);
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else if (arr2[i, j] && arr[i, j] == '2') {
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write(arr[i, j]);
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else if (arr2[i, j] && arr[i, j] == '3') {
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.Write(arr[i, j]);
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else if (arr2[i, j] && arr[i, j] == '4') {
+                            Console.ForegroundColor = ConsoleColor.Cyan;
+                            Console.Write(arr[i, j]);
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else if (arr2[i, j] && arr[i, j] == '5') {
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
+                            Console.Write(arr[i, j]);
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else if (arr2[i, j] && arr[i, j] == '6') {
+                            Console.ForegroundColor = ConsoleColor.Magenta;
+                            Console.Write(arr[i, j]);
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else if (arr2[i, j] && arr[i, j] == '7') {
+                            Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                            Console.Write(arr[i, j]);
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else if (arr2[i, j] && arr[i, j] == '8') {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.Write(arr[i, j]);
+                            Console.Write(" ");
+                            Console.ResetColor();
+                        }
+                        else {
+                            Console.Write('X');
+                            Console.Write(" ");
+                        }
                     }
                 }
+
             }
             Console.WriteLine("");
         }
@@ -299,7 +302,7 @@ class Game {
         }
     }
 
-    public void DbgInp(bool[,] arr, char[,] arr2, bool[,] arr3) {
+    public void DbgInp(bool[,] arr, char[,] arr2, bool[,] arr3) {//Used to check adjcnt function
         for(short i = 0; i < 10; i++) {
             for(short j = 0; j < 10; j++) {
                 arr3[i, j] = true;//True that the position was picked
