@@ -36,8 +36,10 @@ class Program {
         Console.WriteLine("You will have as many turns as you like, the game will end once you clear all the spaces with no bombs or when you type exit as your next guess");
         Console.WriteLine("");
         game.PrntArr(mines, board, picks, size);
+        game.DbgPrnt(mines, size);
         do {
             game.Input(board, mines, picks);
+            game.DbgPrnt(mines, size);
             game.PrntArr(mines, board, picks, size);
             if (game.ChckWin(picks, num)) {
                 Console.Clear();
@@ -161,11 +163,16 @@ class Game {
         }
     }
 
-    public void PrntArr(char[,] arr, bool[,] arr2, bool[,] arr3, int size) {
+    public void PrntArr(char[,] arr, bool[,] adjcnt, bool[,] picks, int size) {
+        string letters = "  A B C D E F G H I J";//Goes on top of board
+        int[] nums = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };//Goes to left of board
         Console.Clear();
+        Console.WriteLine(letters);
         for (short i = 0; i < size; i++) {
+            Console.Write(nums[i]);
+            Console.Write(" ");
             for (short j = 0; j < size; j++) {
-                if (!arr3[i, j]) {
+                if (!picks[i, j]) {
                     Console.Write('X');
                     Console.Write(" ");
                 }
@@ -176,56 +183,56 @@ class Game {
                     Console.Write(" ");
                 }
                 else {
-                    if (arr2[i, j]) {
+                    if (adjcnt[i, j]) {
                         if (arr[i, j] == '0') {
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.Write("-");
                             Console.ResetColor();
                             Console.Write(" ");
                         }
-                        else if (arr2[i, j] && arr[i, j] == '1') {
+                        else if (adjcnt[i, j] && arr[i, j] == '1') {
                             Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.Write(arr[i, j]);
                             Console.Write(" ");
                             Console.ResetColor();
                         }
-                        else if (arr2[i, j] && arr[i, j] == '2') {
+                        else if (adjcnt[i, j] && arr[i, j] == '2') {
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.Write(arr[i, j]);
                             Console.Write(" ");
                             Console.ResetColor();
                         }
-                        else if (arr2[i, j] && arr[i, j] == '3') {
+                        else if (adjcnt[i, j] && arr[i, j] == '3') {
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.Write(arr[i, j]);
                             Console.Write(" ");
                             Console.ResetColor();
                         }
-                        else if (arr2[i, j] && arr[i, j] == '4') {
+                        else if (adjcnt[i, j] && arr[i, j] == '4') {
                             Console.ForegroundColor = ConsoleColor.Cyan;
                             Console.Write(arr[i, j]);
                             Console.Write(" ");
                             Console.ResetColor();
                         }
-                        else if (arr2[i, j] && arr[i, j] == '5') {
+                        else if (adjcnt[i, j] && arr[i, j] == '5') {
                             Console.ForegroundColor = ConsoleColor.DarkCyan;
                             Console.Write(arr[i, j]);
                             Console.Write(" ");
                             Console.ResetColor();
                         }
-                        else if (arr2[i, j] && arr[i, j] == '6') {
+                        else if (adjcnt[i, j] && arr[i, j] == '6') {
                             Console.ForegroundColor = ConsoleColor.Magenta;
                             Console.Write(arr[i, j]);
                             Console.Write(" ");
                             Console.ResetColor();
                         }
-                        else if (arr2[i, j] && arr[i, j] == '7') {
+                        else if (adjcnt[i, j] && arr[i, j] == '7') {
                             Console.ForegroundColor = ConsoleColor.DarkMagenta;
                             Console.Write(arr[i, j]);
                             Console.Write(" ");
                             Console.ResetColor();
                         }
-                        else if (arr2[i, j] && arr[i, j] == '8') {
+                        else if (adjcnt[i, j] && arr[i, j] == '8') {
                             Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.Write(arr[i, j]);
                             Console.Write(" ");
@@ -316,7 +323,7 @@ class Game {
         }
     }
 
-    public void Input(bool[,] arr, char [,] arr2, bool [,] arr3) {//Super validation
+    public void Input(bool[,] arr, char [,] arr2, bool [,] arr3) {//Input validation
         int x = -1;
         int y = -1;
         do {
@@ -331,13 +338,24 @@ class Game {
                     if (x < 0) {
                         x = chars[i] - '0';
                     }
-                    else {
-                        y = chars[i] - '0'; break;
+                }
+                else if (chars[i] >= 'A' && chars[i] <= 'J') {
+                    if (y < 0) {
+                        y = chars[i] - 'A';
                     }
+                }
+                else if (chars[i] >= 'a' && chars[i] <= 'j') {
+                    if (y < 0) {
+                        y = chars[i] - 'a';
+                    }
+                }
+                if (y > 0 && x > 0) {
+                    break;
                 }
             }
         } while (x < 0 || y < 0);
-        if (arr2[x, y] == '*') {
+
+        if (arr2[x, y] == '*') {//Lose condition
             Console.WriteLine("You lost! Better luck next time.");
             Console.ReadLine();
             System.Environment.Exit(0);
