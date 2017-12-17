@@ -149,17 +149,11 @@ class Game {
                     Console.Write('X');
                     Console.Write(" ");
                 }
-                else if (arr[i, j] == '0') {
-                    Console.BackgroundColor = ConsoleColor.Green;
-                    Console.Write(" ");
-                    Console.ResetColor();
-                    Console.Write(" ");
-                }
                 else if (arr[i, j] == '1') {
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.Write(arr[i, j]);
-                    Console.Write(" ");
-                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;//Changes color of the console per number
+                    Console.Write(arr[i, j]);//Writes the number
+                    Console.Write(" ");//Puts a space between numbers
+                    Console.ResetColor();//Resets color for next output
                 }
                 else if (arr[i, j] == '2') {
                     Console.ForegroundColor = ConsoleColor.Yellow;
@@ -721,7 +715,7 @@ class Game {
 
     public bool ChckWin(bool[,] picks, short bombs) {
         short temp = 0;
-        int bound = (int)Math.Sqrt(picks.Length);
+        int bound = (int)Math.Sqrt(picks.Length); //Used to calculate boundary of a 2d array because otherwise its size^2
         for(short i = 0; i < bound; i++) {
             for(short j = 0; j < bound; j++) {
                 if (!picks[i, j]) {
